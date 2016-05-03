@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://soooldier.com/"/>
-  <updated>2016-04-22T06:40:26.000Z</updated>
+  <updated>2016-05-03T08:28:48.000Z</updated>
   <id>http://soooldier.com/</id>
   
   <author>
@@ -14,6 +14,22 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>gitflow开发流程</title>
+    <link href="http://soooldier.com/2016/05/03/gitflow%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/"/>
+    <id>http://soooldier.com/2016/05/03/gitflow开发流程/</id>
+    <published>2016-05-03T08:28:48.000Z</published>
+    <updated>2016-05-03T08:28:48.000Z</updated>
+    
+    <content type="html"></content>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>Hello World</title>
