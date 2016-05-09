@@ -3,8 +3,30 @@
 <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>gitflow包括两种分支类型：主分支和辅助分支。主分支负责代码整合或者代码版本号管理；辅助分支是用于解决特定问题的分支，主要包括新功能开发，紧急bug修复等。</p>
 <h3 id="主分支"><a href="#主分支" class="headerlink" title="主分支"></a>主分支</h3><ol>
 <li>master分支，它管理的是随时可以在生产环境中部署的代码。当开发告一段落并可以上线时，master分支会产生一份可供部署的代码，并且特别重要的是：每一次master分支的更新最好添加对应的版本号标签（TAG，比如v1.2.13）</li>
-<li>develop分支</li>
+<li>develop分支，它用来保存最新开发成果分支。</li>
 </ol>
+<h3 id="辅助分支"><a href="#辅助分支" class="headerlink" title="辅助分支"></a>辅助分支</h3><p>辅助分支是真正实施软件开发，bug修复的分支。主要包括：</p>
+<pre><code>1. 新功能开发的feature分支
+2. 辅助版本发布的release分支
+3. 修正生产环境缺陷的hotfix分支
+</code></pre><h4 id="feature分支"><a href="#feature分支" class="headerlink" title="feature分支"></a>feature分支</h4><ul>
+<li>从develop分支发起</li>
+<li>代码合回develop分支</li>
+<li>命名以feature-为前缀</li>
+</ul>
+<p>feature分支通常是在开发一项新功能时候使用的分支，这个分支的代码最后会被合并到develop分支或者直接丢弃。</p>
+<h4 id="release分支"><a href="#release分支" class="headerlink" title="release分支"></a>release分支</h4><ul>
+<li>从develop分支发起</li>
+<li>代码合回develop分支和master分支</li>
+<li>命名以release-为前缀</li>
+</ul>
+<p>release分支专门为新版本发布而设计，在该分支上允许做一些小的缺陷验证。</p>
+<h4 id="hotfix分支"><a href="#hotfix分支" class="headerlink" title="hotfix分支"></a>hotfix分支</h4><ul>
+<li>从master分支派生</li>
+<li>代码合并回master分支和develop分支</li>
+<li>命名以hotfix-为前缀</li>
+</ul>
+<p>hotfix分支专门用来修复线上紧急bug</p>
 <p><img src="/media/git-model@2x.png" alt="git-model@2x"></p>
 </div></article></div></section><footer><div class="paginator"></div><div id="disqus_thread"></div><script>var disqus_shortname = 'soooldier';
 var disqus_identifier = '2016/05/03/gitflow开发流程/';
