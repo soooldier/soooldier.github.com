@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://soooldier.com/"/>
-  <updated>2016-09-08T14:18:33.000Z</updated>
+  <updated>2016-09-08T14:56:16.000Z</updated>
   <id>http://soooldier.com/</id>
   
   <author>
@@ -20,17 +20,25 @@
     <link href="http://soooldier.com/2016/09/08/%E8%AE%B0%E4%B8%80%E6%AC%A1lnmp%E7%8E%AF%E5%A2%83%E9%97%AE%E9%A2%98/"/>
     <id>http://soooldier.com/2016/09/08/记一次lnmp环境问题/</id>
     <published>2016-09-08T12:53:32.000Z</published>
-    <updated>2016-09-08T14:18:33.000Z</updated>
+    <updated>2016-09-08T14:56:16.000Z</updated>
     
     <content type="html">&lt;h4 id=&quot;起因&quot;&gt;&lt;a href=&quot;#起因&quot; class=&quot;headerlink&quot; title=&quot;起因&quot;&gt;&lt;/a&gt;起因&lt;/h4&gt;&lt;p&gt;本打算把公司内部的php升级为5.6.x，op給了一个测试环境。于是便开始了环境搭建并测试的工作，configure，make，make install。正当我使用phpinfo()测试通过天真地以为环境搭建完成的时候，突然发现了一个奇怪的问题：通过fpm访问php的错误日志并未纪录在php.ini指定的日志文件中而却出现在了php-fpm.conf指定的配置文件。&lt;/p&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;h4 id=&quot;初步排查&quot;&gt;&lt;a href=&quot;#初步排查&quot; class=&quot;headerlink&quot; title=&quot;初步排查&quot;&gt;&lt;/a&gt;初步排查&lt;/h4&gt;&lt;p&gt;php.ini中跟错误记录相关的配置如下：&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;error_reporting = E_ALL&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;log_errors = On&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;error_log = /usr/local/php/var/log/php_errors.log&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h4 id=&quot;问题复现&quot;&gt;&lt;a href=&quot;#问题复现&quot; class=&quot;headerlink&quot; title=&quot;问题复现&quot;&gt;&lt;/a&gt;问题复现&lt;/h4&gt;&lt;p&gt;php.ini中跟错误记录相关的配置如下：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;error_reporting = E_ALL&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;log_errors = On&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;error_log = /home/ziroom/runtime/php/var/log/php-errors.log&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;php-fpm.conf的配置：&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;error_log = /usr/local/php/var/log/php-fpm.log&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;log_level = notice&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;; Redirect worker stdout and stderr into main error log. If not set, stdout and stderr will be redirected to /dev/null according to FastCGI specs. Note: on highloaded environement, this can cause some delay in the page process time (several ms).&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;catch_workers_output = yes&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;error_log = /home/ziroom/runtime/php/var/log/php-fpm.log&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;log_level = notice&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;; Redirect worker stdout and stderr into main error log. If not set, stdout and stderr will be redirected to /dev/null according to FastCGI specs. Note: on highloaded environement, this can cause some delay in the page process time (several ms).&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;catch_workers_output = yes&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;注意fpm中的catch_workers_output设置，它的作用是把fpm worker进程的stdout和stderr转发到主进程的error log。&lt;strong&gt;一定设置它为yes！！！&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;访问测试脚本test.php，它的内容为&lt;code&gt;echo 2/0;&lt;/code&gt;，php-fpm.log中的日志内容如下：&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;[30-Aug-2016 11:22:07] WARNING: [pool www] child 3372 said into stderr: &amp;quot;NOTICE: PHP message: PHP Warning:  Division by zero in /usr/local/nginx/html/index.php on line 3&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;[08-Sep-2016 14:29:41] WARNING: [pool www] child 126 said into stderr: &amp;quot;NOTICE: PHP message: PHP Warning:  Division by zero in /usr/local/nginx/html/index.php on line 2&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h4 id=&quot;问题排查&quot;&gt;&lt;a href=&quot;#问题排查&quot; class=&quot;headerlink&quot; title=&quot;问题排查&quot;&gt;&lt;/a&gt;问题排查&lt;/h4&gt;&lt;p&gt;从上面的日志可以看出pid为126的进程（fpm子进程）向stderr发送了一条级别为NOTICE的错误信息，这条错误信息恰好是php抛出的一个Warning；但是对于真正记录错误日志的fpm主进程来说却又是一个WARNING。&lt;/p&gt;
+&lt;p&gt;接下来试着调高fpm的log_level为warning，重新访问test.php。结果并没有记录任何错误日志。这个现象很容易解释，fpm子进程向stderr传递的是一个NOTICE级别的信息，而配置文件中log_level的设置高于NOTICE，因而不会记录日志。&lt;/p&gt;
+&lt;p&gt;但是！！！为何php的错误会记录到fpm的日志文件中？请叫老b得知他没有这个问题，那么一定我自己的问题了。几经辗转后超哥提醒我：&lt;strong&gt;看看是不是权限的问题！&lt;/strong&gt; 刚开始其实我是拒绝的，因为按常理来说如果是因为权限问题的话在日志文件里应该会有报错的。苦于没有别的办法就看了下目录权限，卧槽！！！真是有问题，fpm的用户和组都是ziroom，而配置的&lt;code&gt;/home/ziroom/runtime/php/var/log/php-errors.log&lt;/code&gt;对ziroom用户来说却没有写入权限。修改权限后重启fpm，访问test.php，一切正常，错误日志写到了php-errors.log中。&lt;/p&gt;
+&lt;h4 id=&quot;追根溯源&quot;&gt;&lt;a href=&quot;#追根溯源&quot; class=&quot;headerlink&quot; title=&quot;追根溯源&quot;&gt;&lt;/a&gt;追根溯源&lt;/h4&gt;&lt;p&gt;问题虽然解决了，但是并未解决掉心里的疑问，打算再追查下去。疑问有2 ：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;没有权限为什么没有报错&lt;/li&gt;
+&lt;li&gt;写入php-errors.log没有权限，为何写入php-fpm.log却有权限&lt;/li&gt;
+&lt;/ol&gt;
 </content>
     
     <summary type="html">
