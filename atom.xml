@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://soooldier.com/"/>
-  <updated>2016-09-08T14:56:16.000Z</updated>
+  <updated>2016-09-09T03:02:25.000Z</updated>
   <id>http://soooldier.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://soooldier.com/2016/09/08/%E8%AE%B0%E4%B8%80%E6%AC%A1lnmp%E7%8E%AF%E5%A2%83%E9%97%AE%E9%A2%98/"/>
     <id>http://soooldier.com/2016/09/08/记一次lnmp环境问题/</id>
     <published>2016-09-08T12:53:32.000Z</published>
-    <updated>2016-09-08T14:56:16.000Z</updated>
+    <updated>2016-09-09T03:02:25.000Z</updated>
     
     <content type="html">&lt;h4 id=&quot;起因&quot;&gt;&lt;a href=&quot;#起因&quot; class=&quot;headerlink&quot; title=&quot;起因&quot;&gt;&lt;/a&gt;起因&lt;/h4&gt;&lt;p&gt;本打算把公司内部的php升级为5.6.x，op給了一个测试环境。于是便开始了环境搭建并测试的工作，configure，make，make install。正当我使用phpinfo()测试通过天真地以为环境搭建完成的时候，突然发现了一个奇怪的问题：通过fpm访问php的错误日志并未纪录在php.ini指定的日志文件中而却出现在了php-fpm.conf指定的配置文件。&lt;/p&gt;
 &lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
@@ -39,6 +39,17 @@
 &lt;li&gt;没有权限为什么没有报错&lt;/li&gt;
 &lt;li&gt;写入php-errors.log没有权限，为何写入php-fpm.log却有权限&lt;/li&gt;
 &lt;/ol&gt;
+&lt;p&gt;对于问题1，root用户启动php-fpm主进程，主进程fork子进程，它的用户被设置成了fpm。于是把fpm的子进程数量改为1，strace该进程看到以下信息：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;docker环境直接使用strace会报错（strace: attach: ptrace(PTRACE_ATTACH, …): Operation not permitted）必须打开选项–privileged&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;open(&amp;quot;/usr/local/nginx/html/index.php&amp;quot;, O_RDONLY) = 5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;fstat(5, &amp;#123;st_mode=S_IFREG|0644, st_size=16, ...&amp;#125;) = 0&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;fstat(5, &amp;#123;st_mode=S_IFREG|0644, st_size=16, ...&amp;#125;) = 0&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;fstat(5, &amp;#123;st_mode=S_IFREG|0644, st_size=16, ...&amp;#125;) = 0&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;mmap(NULL, 16, PROT_READ, MAP_SHARED, 5, 0) = 0x7f8aa96dd000&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;getcwd(&amp;quot;/&amp;quot;, 4095)                       = 2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;chdir(&amp;quot;/usr/local/nginx/html&amp;quot;)          = 0&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;setitimer(ITIMER_PROF, &amp;#123;it_interval=&amp;#123;0, 0&amp;#125;, it_value=&amp;#123;30, 0&amp;#125;&amp;#125;, NULL) = 0&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;munmap(0x7f8aa96dd000, 16)              = 0&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;close(5)                                = 0&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;open(&amp;quot;/usr/local/php/var/log/php_errors.log&amp;quot;, O_WRONLY|O_CREAT|O_APPEND, 0644) = -1 EACCES (Permission denied)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;write(2, &amp;quot;NOTICE: PHP message: PHP Warning&amp;quot;..., 97) = 97&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;chdir(&amp;quot;/&amp;quot;)                              = 0&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;times(&amp;#123;tms_utime=0, tms_stime=0, tms_cutime=0, tms_cstime=0&amp;#125;) = 4296910449&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;stat(&amp;quot;/etc/localtime&amp;quot;, &amp;#123;st_mode=S_IFREG|0644, st_size=118, ...&amp;#125;) = 0&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;write(4, &amp;quot;127.0.0.1 -  09/Sep/2016:01:59:5&amp;quot;..., 110) = 110&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;setitimer(ITIMER_PROF, &amp;#123;it_interval=&amp;#123;0, 0&amp;#125;, it_value=&amp;#123;0, 0&amp;#125;&amp;#125;, NULL) = 0&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;write(3, &amp;quot;\1\7\0\1\0Y\7\0PHP message: PHP Warning&amp;quot;..., 200) = 200&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;shutdown(3, SHUT_WR)                    = 0&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;recvfrom(3, &amp;quot;\1\5\0\1\0\0\0\0&amp;quot;, 8, 0, NULL, NULL) = 8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;recvfrom(3, &amp;quot;&amp;quot;, 8, 0, NULL, NULL)       = 0&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;close(3)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;可以看到通过strace拿到的信息中出现了&lt;em&gt;Permission denied&lt;/em&gt;关键字，紧接着把”NOTICE: PHP message: PHP Warning”字符串写到了标准错误输出。这就和第一次在php-fpm日志中看到的信息相符了。&lt;/p&gt;
+&lt;p&gt;问题2，fpm主进程是以root用户启动的，那么大胆猜测一下php-fpm.log只有fpm主进程才往日志里添加内容。lsof看一下：&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ lsof /usr/local/php/var/log/php-fpm.log&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$ php-fpm 125 root    2w   REG   0,46     1967  607 /usr/local/php/var/log/php-fpm.log&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;$ php-fpm 125 root    3w   REG   0,46     1967  607 /usr/local/php/var/log/php-fpm.log&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;果不其然，只有fpm的主进程（pid为125）才向php-fpm.log文件中写入日志。&lt;/p&gt;
+&lt;h4 id=&quot;总结&quot;&gt;&lt;a href=&quot;#总结&quot; class=&quot;headerlink&quot; title=&quot;总结&quot;&gt;&lt;/a&gt;总结&lt;/h4&gt;&lt;p&gt;至此，忽略内部更详尽细节，已经完全解决了文章开头的疑问。至于fpm为何这么设计，我等菜鸟无法评论。&lt;/p&gt;
+&lt;p&gt;最后感谢老b同志亲临现场指导，虽是由一个低级错误引起，但只需要稍微往深一点研究还是挺有意思的。&lt;/p&gt;
 </content>
     
     <summary type="html">
@@ -47,6 +58,8 @@
     
     </summary>
     
+    
+      <category term="lnmp" scheme="http://soooldier.com/tags/lnmp/"/>
     
   </entry>
   
