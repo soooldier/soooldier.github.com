@@ -4,9 +4,9 @@
   <subtitle>好记性不如烂笔头</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://soooldier.com/"/>
+  <link href="http://www.soooldier.com/"/>
   <updated>2017-02-12T07:01:02.000Z</updated>
-  <id>http://soooldier.com/</id>
+  <id>http://www.soooldier.com/</id>
   
   <author>
     <name>soooldier</name>
@@ -17,8 +17,8 @@
   
   <entry>
     <title>nginx错误502，503，504分析</title>
-    <link href="http://soooldier.com/2017/02/10/nginx%E9%94%99%E8%AF%AF502%EF%BC%8C503%EF%BC%8C504%E5%88%86%E6%9E%90/"/>
-    <id>http://soooldier.com/2017/02/10/nginx错误502，503，504分析/</id>
+    <link href="http://www.soooldier.com/2017/02/10/nginx%E9%94%99%E8%AF%AF502%EF%BC%8C503%EF%BC%8C504%E5%88%86%E6%9E%90/"/>
+    <id>http://www.soooldier.com/2017/02/10/nginx错误502，503，504分析/</id>
     <published>2017-02-10T09:28:10.000Z</published>
     <updated>2017-02-12T07:01:02.000Z</updated>
     
@@ -50,14 +50,14 @@
     </summary>
     
     
-      <category term="lnmp" scheme="http://soooldier.com/tags/lnmp/"/>
+      <category term="lnmp" scheme="http://www.soooldier.com/tags/lnmp/"/>
     
   </entry>
   
   <entry>
     <title>记一次lnmp环境问题</title>
-    <link href="http://soooldier.com/2016/09/08/%E8%AE%B0%E4%B8%80%E6%AC%A1lnmp%E7%8E%AF%E5%A2%83%E9%97%AE%E9%A2%98/"/>
-    <id>http://soooldier.com/2016/09/08/记一次lnmp环境问题/</id>
+    <link href="http://www.soooldier.com/2016/09/08/%E8%AE%B0%E4%B8%80%E6%AC%A1lnmp%E7%8E%AF%E5%A2%83%E9%97%AE%E9%A2%98/"/>
+    <id>http://www.soooldier.com/2016/09/08/记一次lnmp环境问题/</id>
     <published>2016-09-08T12:53:32.000Z</published>
     <updated>2016-09-09T03:02:25.000Z</updated>
     
@@ -98,7 +98,7 @@
     </summary>
     
     
-      <category term="lnmp" scheme="http://soooldier.com/tags/lnmp/"/>
+      <category term="lnmp" scheme="http://www.soooldier.com/tags/lnmp/"/>
     
   </entry>
   
